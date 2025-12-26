@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalpanik</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <h1>Kalpanik</h1>
+  <p class="subtitle">Immersive Mythological Guidance</p>
+
+  <div class="scriptures">
+    <button onclick="selectScripture('bhagavad_gita')">Bhagavad Gita</button>
+    <button onclick="selectScripture('ramayana')">Ramayana</button>
+    <button onclick="selectScripture('shiva_purana')">Shiva Purana</button>
+  </div>
+
+  <textarea id="question" placeholder="What troubles your mind?"></textarea>
+
+  <button class="begin" onclick="beginNarration()">Begin</button>
+
+  <div id="output"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
