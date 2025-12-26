@@ -8,7 +8,13 @@ function selectScripture(scripture) {
 
   document.body.style.background = theme.background;
   document.body.style.color = theme.text;
+
+  document.body.style.setProperty(
+    "--glow-color",
+    theme.glow
+  );
 }
+
 
 function beginNarration() {
   const question = document.getElementById("question").value;
