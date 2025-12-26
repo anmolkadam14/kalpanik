@@ -3,10 +3,11 @@ let selectedScripture = null;
 function selectScripture(scripture) {
   selectedScripture = scripture;
 
-  document.body.style.background =
-    scripture === "shiva_purana" ? "#000" :
-    scripture === "ramayana" ? "#1b3a2f" :
-    "#1a237e";
+  const theme = THEMES[scripture];
+  if (!theme) return;
+
+  document.body.style.background = theme.background;
+  document.body.style.color = theme.text;
 }
 
 function beginNarration() {
@@ -19,26 +20,44 @@ function beginNarration() {
 
   fetch("http://127.0.0.1:5000/narrate", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
       scripture: selectedScripture,
       user_input: question
     })
   })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("output").innerText = data.story;
-    speak(data.story);
-  })
-  .catch(() => {
-    document.getElementById("output").innerText =
-      "Silence itself becomes guidance.";
-  });
+    .then(res => res.json())
+    .then(data => {
+      const output = document.getElementById("output");
+
+      // Reset animation
+      output.classList.remove("show");
+      output.innerText = data.story;
+
+      // Small pause before showing text
+      setTimeout(() => {
+        output.classList.add("show");
+      }, 200);
+
+      // Small pause before voice starts
+      setTimeout(() => {
+        speak(data.story);
+      }, 800);
+    })
+    .catch(() => {
+      document.getElementById("output").innerText =
+        "Silence itself becomes guidance.";
+    });
 }
 
 function speak(text) {
   const utter = new SpeechSynthesisUtterance(text);
-  utter.rate = 0.85;
-  utter.pitch = 0.9;
+  utter.rate = 0.8;
+  utter.pitch = 0.85;
+  utter.volume = 0.9;
+  speechSynthesis.cancel(); // stop previous voice
   speechSynthesis.speak(utter);
 }
+
